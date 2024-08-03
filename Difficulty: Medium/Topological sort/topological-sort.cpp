@@ -24,23 +24,50 @@ class Solution
 	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
 	    vector<int> visited(V,0);
-	    stack<int> st;
+	   // stack<int> st;
+	   
+	   vector<int> indegree(V,0);
+	   queue<int> q;
+	   
+	   for(int i=0; i<V; i++)
+	   {
+	       for(auto node: adj[i]) indegree[node]++;
+	   }
+	   
+	   for(int i=0; i<V; i++)
+	   {
+	       if(indegree[i]==0)q.push(i);
+	   }
 	    
-	    for(int i=0; i<V; i++)
+	   // for(int i=0; i<V; i++)
+	   // {
+	   //     if(!visited[i])
+	   //     {
+	   //         dfs(adj,visited,st,i);
+	   //     }
+	   // }
+	    
+	   // while(!st.empty())
+	   // {
+	   //     solution.push_back(st.top());
+	   //     st.pop();
+	   // }
+	   
+	   vector<int> solution;
+	    while(!q.empty())
 	    {
-	        if(!visited[i])
+	        int front=q.front();
+	        q.pop();
+	        solution.push_back(front);
+	        
+	        for(auto i: adj[front])
 	        {
-	            dfs(adj,visited,st,i);
+	            indegree[i]--;
+	            
+	            if(indegree[i]==0) q.push(i);
 	        }
 	    }
 	    
-	    vector<int> solution;
-	    
-	    while(!st.empty())
-	    {
-	        solution.push_back(st.top());
-	        st.pop();
-	    }
 	    
 	    return solution;
 	}
